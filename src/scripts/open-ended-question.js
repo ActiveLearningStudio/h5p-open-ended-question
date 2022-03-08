@@ -25,6 +25,7 @@ export default class OpenEndedQuestion extends H5P.EventDispatcher {
     this.currentInput = '';
 
     this.xApiGenerator = new xApiGenerator(question);
+    this.inputElement = null;
 
     /**
      * Create open ended question element
@@ -86,6 +87,7 @@ export default class OpenEndedQuestion extends H5P.EventDispatcher {
 
       inputElement.addEventListener('keydown', () => this.trigger('changed'));
 
+      this.inputElement = inputElement;
       content.appendChild(inputElement);
 
       questionWrapper.appendChild(questionElement);
@@ -110,6 +112,16 @@ export default class OpenEndedQuestion extends H5P.EventDispatcher {
         return;
       }
       this.currentInput = contentData.previousState;
+    };
+
+    /**
+     * Reset the content
+     */
+    this.resetTask = function () {
+      this.currentInput = '';
+      if (this.inputElement != null) {
+        this.inputElement.value = '';
+      }
     };
 
     this.restorePreviousState();
